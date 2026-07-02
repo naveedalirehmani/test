@@ -137,13 +137,32 @@ function collect() {
 }
 
 // ---------- run ----------
+function showLoading(nPrompts, nProviders) {
+  $("#results").innerHTML = `
+    <div class="loading-card">
+      <div class="spinner-lg"></div>
+      <div class="lc-text">
+        <strong>Analyzing ${nPrompts} prompt${nPrompts > 1 ? "s" : ""} × ${nProviders} provider${nProviders > 1 ? "s" : ""}<span class="lc-dots"></span></strong>
+        <span>Fetching each answer-engine response once, then running both parses. This can take a minute or two — keep this tab open.</span>
+      </div>
+    </div>`;
+}
+
 async function run() {
   const payload = collect();
   if (!payload.prompts.length) return setStatus("Add at least one prompt.", true);
   if (!payload.providers.length) return setStatus("Pick at least one provider.", true);
 
-  setStatus("Fetching responses + running both parses… (this can take a while)");
-  $("#runBtn").disabled = true;
+  const nP = payload.prompts.length;
+  const nProv = payload.providers.length;
+  const btn = $("#runBtn");
+  const btnLabel = btn.innerHTML;
+
+  showLoading(nP, nProv);
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Analyzing…';
+  setStatus(`Fetching ${nP * nProv} response(s) and running both parses…`);
+
   try {
     const session = await fetch("/api/analyze", {
       method: "POST",
@@ -153,13 +172,15 @@ async function run() {
       if (!r.ok) throw new Error((await r.json()).detail || r.statusText);
       return r.json();
     });
-    renderSession(session);
+    renderSession(session); // replaces the loading card
     setStatus("Done.");
     loadSessions();
   } catch (e) {
+    $("#results").innerHTML = ""; // clear the loading card
     setStatus("Error: " + e.message, true);
   } finally {
-    $("#runBtn").disabled = false;
+    btn.disabled = false;
+    btn.innerHTML = btnLabel;
   }
 }
 
