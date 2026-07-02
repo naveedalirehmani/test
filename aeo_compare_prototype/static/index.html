@@ -25,18 +25,20 @@
       <section class="panel">
         <h2>1. Business context</h2>
         <div class="grid2">
-          <label>Business name<input id="business_name" placeholder="e.g. Notion" /></label>
-          <label>Website URL<input id="website_url" placeholder="https://notion.so" /></label>
-          <label>Brand names (comma-sep)<input id="brand_names" placeholder="Notion, Notion Labs" /></label>
-          <label>Industry (comma-sep)<input id="industry" placeholder="productivity software, SaaS" /></label>
-          <label>Products / services (comma-sep)<input id="products_services" placeholder="workspace, docs, wiki" /></label>
-          <label>Existing business_id<input id="business_id" placeholder="loads profile from DB" /></label>
+          <label>Business name<input id="business_name" value="Notion" placeholder="Notion" /></label>
+          <label>Website URL<input id="website_url" value="https://www.notion.so" placeholder="https://www.notion.so" /></label>
+          <label>Brand names (comma-sep)<input id="brand_names" value="Notion, Notion Labs, Notion AI" placeholder="Notion, Notion Labs, Notion AI" /></label>
+          <label>Industry (comma-sep)<input id="industry" value="productivity software, SaaS, collaboration tools" placeholder="productivity software, SaaS, collaboration tools" /></label>
+          <label>Products / services (comma-sep)<input id="products_services" value="workspace, docs, wiki, project management, note-taking" placeholder="workspace, docs, wiki, project management, note-taking" /></label>
+          <label>Existing business_id<input id="business_id" placeholder="loads profile from DB (optional)" /></label>
         </div>
         <div class="actions" style="margin-top:8px">
+          <button id="saveBiz" class="btn-ghost small">Save business</button>
+          <button id="clearBiz" class="btn-ghost small">Clear saved</button>
           <button id="loadBiz" class="btn-ghost small">Load business by ID</button>
           <span id="bizStatus" class="status"></span>
         </div>
-        <label class="full">Business overview<textarea id="business_overview" rows="2" placeholder="What the business does"></textarea></label>
+        <label class="full">Business overview<textarea id="business_overview" rows="2" placeholder="What the business does">Notion is an all-in-one workspace that combines notes, docs, wikis, databases, and project management into a single connected tool for individuals and teams.</textarea></label>
 
         <h2>2. Providers</h2>
         <div id="providers" class="providers"></div>

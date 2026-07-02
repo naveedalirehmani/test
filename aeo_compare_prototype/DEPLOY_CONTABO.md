@@ -49,7 +49,7 @@ docker run -d --name aeo-compare --restart unless-stopped \
 sudo ufw allow 8200/tcp
 
 # 6. Check it
-docker logs -f aeo-compare
+sudo docker logs -f aeo-compare
 curl -s localhost:8200/api/providers
 ```
 

@@ -24,14 +24,61 @@ async function init() {
     lab.append(cb, document.createTextNode(p));
     box.append(lab);
   });
-  for (let i = 0; i < 4; i++) addPrompt();
+  const DEFAULT_PROMPTS = [
+    "What are the best all-in-one workspace tools for startups?",
+    "Best note-taking and documentation apps for remote teams",
+    "Notion vs Confluence: which is better for team wikis?",
+    "What tools can replace Google Docs for collaborative documentation?",
+  ];
+  DEFAULT_PROMPTS.forEach((p) => addPrompt(p));
 
-  // pre-seed the default business profile from the DB
-  if (res.default_business_id) {
-    $("#business_id").value = res.default_business_id;
-    loadBusiness();
-  }
+  // If the user previously saved a business, restore it (overrides the prefilled
+  // defaults). Otherwise the prefilled Notion values in the HTML stay as-is. We
+  // intentionally do NOT auto-load a DB profile, so an empty database shows no
+  // error — use the "Load business by ID" button if you want a real profile.
+  restoreBusiness();
   loadSessions();
+}
+
+// ---------- business save/restore (localStorage) ----------
+const BIZ_FIELDS = [
+  "business_name", "website_url", "brand_names", "industry",
+  "products_services", "business_id", "business_overview",
+];
+const BIZ_KEY = "aeo_compare_business";
+
+function saveBusiness() {
+  const data = {};
+  BIZ_FIELDS.forEach((id) => (data[id] = $("#" + id).value));
+  localStorage.setItem(BIZ_KEY, JSON.stringify(data));
+  const s = $("#bizStatus");
+  s.textContent = "Saved ✓";
+  s.style.color = "var(--green)";
+}
+
+function restoreBusiness() {
+  const raw = localStorage.getItem(BIZ_KEY);
+  if (!raw) return false;
+  try {
+    const data = JSON.parse(raw);
+    BIZ_FIELDS.forEach((id) => {
+      if (data[id] !== undefined) $("#" + id).value = data[id];
+    });
+    const s = $("#bizStatus");
+    s.textContent = "Restored saved business";
+    s.style.color = "var(--muted)";
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function clearBusiness() {
+  localStorage.removeItem(BIZ_KEY);
+  BIZ_FIELDS.forEach((id) => ($("#" + id).value = ""));
+  const s = $("#bizStatus");
+  s.textContent = "Cleared (placeholders shown)";
+  s.style.color = "var(--muted)";
 }
 
 async function loadBusiness() {
@@ -419,4 +466,6 @@ $("#addPrompt").onclick = () => addPrompt();
 $("#runBtn").onclick = run;
 $("#refreshSessions").onclick = loadSessions;
 $("#loadBiz").onclick = loadBusiness;
+$("#saveBiz").onclick = saveBusiness;
+$("#clearBiz").onclick = clearBusiness;
 init();
