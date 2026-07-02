@@ -1,0 +1,11 @@
+# Self-contained dependency set for the AEO comparison app.
+# Versions pinned to match the source project for reproducible builds.
+fastapi==0.115.5
+uvicorn[standard]==0.34.0
+httpx==0.28.1
+motor==3.6.0
+pymongo==4.9.1
+openai==1.109.1
+instructor==1.7.0
+pydantic==2.10.3
+python-dotenv==1.0.1

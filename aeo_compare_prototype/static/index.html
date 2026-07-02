@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AEO Structure Comparison</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>AEO Structure Comparison</h1>
+      <p class="sub">Same AI response &rarr; current 4-list parse vs proposed brand-centric parse, side by side.</p>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h2>Sessions</h2>
+      <button id="refreshSessions" class="btn-ghost small">Refresh</button>
+      <ul id="sessionList" class="session-list"></ul>
+    </aside>
+
+    <main class="main">
+      <section class="panel">
+        <h2>1. Business context</h2>
+        <div class="grid2">
+          <label>Business name<input id="business_name" placeholder="e.g. Notion" /></label>
+          <label>Website URL<input id="website_url" placeholder="https://notion.so" /></label>
+          <label>Brand names (comma-sep)<input id="brand_names" placeholder="Notion, Notion Labs" /></label>
+          <label>Industry (comma-sep)<input id="industry" placeholder="productivity software, SaaS" /></label>
+          <label>Products / services (comma-sep)<input id="products_services" placeholder="workspace, docs, wiki" /></label>
+          <label>Existing business_id<input id="business_id" placeholder="loads profile from DB" /></label>
+        </div>
+        <div class="actions" style="margin-top:8px">
+          <button id="loadBiz" class="btn-ghost small">Load business by ID</button>
+          <span id="bizStatus" class="status"></span>
+        </div>
+        <label class="full">Business overview<textarea id="business_overview" rows="2" placeholder="What the business does"></textarea></label>
+
+        <h2>2. Providers</h2>
+        <div id="providers" class="providers"></div>
+
+        <h2>3. Prompts</h2>
+        <div id="prompts"></div>
+        <button id="addPrompt" class="btn-ghost small">+ Add prompt</button>
+
+        <div class="actions">
+          <button id="runBtn" class="btn-primary">Analyze (fetch once, parse both)</button>
+          <span id="status" class="status"></span>
+        </div>
+      </section>
+
+      <section id="results"></section>
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
